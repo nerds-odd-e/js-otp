@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {randomEntity} from "../api";
+import Api from '@/api'
 
 export default {
     data: () => ({
@@ -15,7 +15,8 @@ export default {
     }),
     methods: {
         go: async function () {
-            const response = await randomEntity();
+            const response = await Api.randomEntity();
+            console.log(response)
             this.result = response.data.entries[0].API;
         }
     }
