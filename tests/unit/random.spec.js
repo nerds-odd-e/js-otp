@@ -2,23 +2,26 @@ import {shallowMount} from '@vue/test-utils'
 import About from '@/views/About'
 import Api from '@/api'
 
+const givenRandomEntityWithName = function (apiName) {
+    Api.randomEntity = jest.fn()
+    Api.randomEntity.mockReturnValue({
+        data: {
+            entries: [
+                {
+                    API: apiName
+                }
+            ]
+        }
+    })
+};
+
 describe('random', function () {
     it('should set result to first entity API', async function () {
-        const wrapper = shallowMount(About);
-        Api.randomEntity = jest.fn()
+        const about = shallowMount(About).vm;
+        givenRandomEntityWithName('ApiName');
 
-        Api.randomEntity.mockReturnValue({
-            data: {
-                entries: [
-                    {
-                        API: 'ApiName'
-                    }
-                ]
-            }
-        })
+        await about.go();
 
-        await wrapper.vm.go();
-
-        expect(wrapper.vm.$data.result).toEqual('ApiName')
+        expect(about.$data.result).toEqual('ApiName')
     });
 });
