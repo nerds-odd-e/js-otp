@@ -1,16 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import entity from './entity'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+    strict: true,
+    modules: {
+        entity
+    }
 })
