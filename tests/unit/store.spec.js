@@ -1,9 +1,9 @@
 import {actions, RANDOM_ENTITY} from '@/store/entity'
-import Api from '@/api'
+import axios from 'axios'
 
 const givenRandomEntityWithName = function (apiName) {
-    Api.randomEntity = jest.fn()
-    Api.randomEntity.mockReturnValue({
+    axios.get = jest.fn()
+    axios.get.mockReturnValue({
         data: {
             entries: [
                 {
