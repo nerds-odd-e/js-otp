@@ -1,12 +1,12 @@
 import Api from '../api'
 
-const RANDOM_ENTITY = 'RANDOM_ENTITY'
+export const RANDOM_ENTITY = 'RANDOM_ENTITY'
 
 const state = {
     entries: [{}]
 }
 
-const actions = {
+export const actions = {
     async randomEntity({commit}) {
         const response = await Api.randomEntity();
         console.log(response)
