@@ -4,61 +4,69 @@ import Api from '@/api'
 import Vuex from 'vuex'
 import Toasted from 'vue-toasted'
 
-const givenRandomEntityWithName = function ({apiName, link}) {
-    Api.randomEntity = jest.fn()
-    Api.randomEntity.mockReturnValue({
-        data: {
-            entries: [
-                {
-                    API: apiName,
-                    Link: link
-                }
-            ]
-        }
-    })
-};
-
 const localVue = createLocalVue()
 
-const createView = function (component) {
+const createView = function (component, state) {
     localVue.use(Vuex)
-    localVue.use(Toasted)
-    const store = new Vuex.Store({
-        state: {
-            entity: {
-                entries: [{}]
-            }
-        }
-    })
-    return shallowMount(component, {store, localVue});
+    return shallowMount(component, {store: new Vuex.Store(state), localVue});
 };
 
 describe('view', function () {
+
+    let component;
+    let vm;
+    localVue.use(Toasted)
+
+    beforeEach(() => {
+        component = createView(About, {
+            state: {
+                entity: {
+                    entries: [{}]
+                }
+            }
+        });
+        vm = component.vm;
+        vm.$toasted = jest.fn()
+        vm.$toasted.show = jest.fn()
+    })
+
     it('should set result to first entry API', async function () {
-        const component = createView(About);
-        const about = component.vm;
         givenRandomEntityWithName({apiName: 'ApiName'});
-        about.$toasted = jest.fn()
-        about.$toasted.show = jest.fn()
 
-        await component.find('button.go').trigger('click')
+        await go()
 
-        expect(about.$data.result).toEqual('ApiName')
+        expect(vm.$data.result).toEqual('ApiName')
     });
 
     it('should show toast as first entry link', async function () {
-        const component = createView(About);
-        const about = component.vm;
         givenRandomEntityWithName({link: 'http://api.link'});
-        about.$toasted = jest.fn()
-        about.$toasted.show = jest.fn()
 
-        await component.find('button.go').trigger('click')
+        await go()
 
-        expect(about.$toasted.show).toBeCalledWith('http://api.link', {
+        expect(vm.$toasted.show).toBeCalledTimes(1)
+        expect(vm.$toasted.show).toBeCalledWith('http://api.link', {
             type: 'info',
             position: 'bottom-center',
             duration: 2000
         })
     });
+
+    const go = function () {
+        component.find('button.go').trigger('click');
+    };
+
+    const givenRandomEntityWithName = function ({apiName, link}) {
+        Api.randomEntity = jest.fn()
+        Api.randomEntity.mockReturnValue({
+            data: {
+                entries: [
+                    {
+                        API: apiName,
+                        Link: link
+                    }
+                ]
+            }
+        })
+    };
+
 });
