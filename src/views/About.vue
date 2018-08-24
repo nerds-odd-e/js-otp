@@ -21,14 +21,16 @@ export default {
     }),
     methods: {
         go: async function () {
-            const response = await Api.randomEntity();
-            console.log(response)
-            this.result = response.data.entries[0].API;
-            this.$toasted.show(response.data.entries[0].Link, {
-                type: 'info',
-                position: 'bottom-center',
-                duration: 2000
-            })
+            Api.randomEntity()
+                .then(response => {
+                    console.log(response)
+                    this.result = response.data.entries[0].API;
+                    this.$toasted.show(response.data.entries[0].Link, {
+                        type: 'info',
+                        position: 'bottom-center',
+                        duration: 2000
+                    })
+                });
         },
         ...mapActions([
             'randomEntity'

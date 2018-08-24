@@ -57,16 +57,18 @@ describe('view', function () {
 
     const givenRandomEntityWithName = function ({apiName, link}) {
         Api.randomEntity = jest.fn()
-        Api.randomEntity.mockReturnValue({
-            data: {
-                entries: [
-                    {
-                        API: apiName,
-                        Link: link
-                    }
-                ]
-            }
-        })
+        Api.randomEntity.mockReturnValue(
+            Promise.resolve({
+                data: {
+                    entries: [
+                        {
+                            API: apiName,
+                            Link: link
+                        }
+                    ]
+                }
+            })
+        )
     };
 
 });

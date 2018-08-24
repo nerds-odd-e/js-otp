@@ -3,15 +3,17 @@ import axios from 'axios'
 
 const givenRandomEntityWithName = function (apiName) {
     axios.get = jest.fn()
-    axios.get.mockReturnValue({
-        data: {
-            entries: [
-                {
-                    API: apiName
-                }
-            ]
-        }
-    })
+    axios.get.mockReturnValue(
+        Promise.resolve({
+            data: {
+                entries: [
+                    {
+                        API: apiName
+                    }
+                ]
+            }
+        })
+    )
 };
 
 describe('store', function () {
