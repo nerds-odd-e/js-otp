@@ -5,9 +5,7 @@ describe('callback', function () {
 
     it('should set something', async function () {
         const component = shallowMount(Callback, {localVue: createLocalVue()});
-        window.setTimeout = (callback, milliseconds) => {
-            callback()
-        }
+        window.setTimeout = jest.fn(callback => callback())
 
         component.find('button.go').trigger('click')
 
