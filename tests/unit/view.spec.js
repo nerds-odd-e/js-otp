@@ -3,6 +3,7 @@ import About from '@/views/About'
 import Api from '@/api'
 import Vuex from 'vuex'
 import Toasted from 'vue-toasted'
+import { render, fireEvent } from '@testing-library/vue'
 
 const localVue = createLocalVue()
 
@@ -49,6 +50,22 @@ describe('view', function () {
             position: 'bottom-center',
             duration: 2000
         })
+    });
+
+    it('should show store result', async function () {
+        const { getByText } = render(About, {
+            store: {
+                state: {
+                    entity: {
+                        entries: [{
+                            API: 'ApiName'
+                        }]
+                    }
+                }
+            }
+        });
+
+        getByText('Your random api from store is ApiName')
     });
 
     const go = function () {
