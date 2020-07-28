@@ -5,7 +5,7 @@ import entity from './entity'
 Vue.use(Vuex)
 
 export const createStore = () => new Vuex.Store({
-    strict: true,
+    // strict: true,
     modules: {
         entity
     }
