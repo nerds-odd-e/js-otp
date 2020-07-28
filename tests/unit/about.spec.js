@@ -16,10 +16,24 @@ const givenRandomApi = entry => {
 
 var wrapper
 
-const createStoreWithApiName = () => {
+const createStoreWithApiName = (apiName) => {
     const store = createStore()
-    store.state.entity.entries[0].API = 'storeApiName'
+    store.state.entity.entries[0].API = apiName
     return store
+}
+
+const clickGoButton = async() => {
+    await wrapper.findAll('button').wrappers.find(e => e.text() === 'Go').trigger('click')
+}
+
+const mocks = {
+    $toasted: {
+        show: jest.fn()
+    }
+}
+
+const mountWithStore = async(store = createStore()) => {
+    wrapper = await mount(About, { store, localVue: createLocalVue(), mocks })
 }
 
 describe('About', () => {
@@ -33,17 +47,33 @@ describe('About', () => {
         givenRandomApi({
             API: 'apiName'
         })
-
-        wrapper = await mount(About, { store: createStore(), localVue: createLocalVue() })
+        await mountWithStore()
         await flushPromises()
 
         expectAllTextExists(wrapper, 'apiName')
     })
 
     test('should show an api name by store', async() => {
-        wrapper = await mount(About, {store: createStoreWithApiName(), localVue: createLocalVue()})
+        await mountWithStore(createStoreWithApiName('storeApiName'))
         await flushPromises()
 
         expectAllTextExists(wrapper, 'storeApiName')
+    })
+
+    test('should show another api name by go button', async() => {
+        givenRandomApi({
+            API: 'apiName'
+        })
+        await mountWithStore()
+        await flushPromises()
+
+        axios.get.mockReset()
+        givenRandomApi({
+            API: 'anotherApiName'
+        })
+        await clickGoButton()
+        await flushPromises()
+
+        expectAllTextExists(wrapper, 'anotherApiName')
     })
 })
