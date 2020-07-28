@@ -4,9 +4,13 @@ import entity from './entity'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export const createStore = () => new Vuex.Store({
     strict: true,
     modules: {
         entity
     }
 })
+
+const store = createStore()
+
+export default store

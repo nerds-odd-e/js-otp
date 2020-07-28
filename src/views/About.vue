@@ -19,6 +19,10 @@ export default {
     computed: mapState({
         storeResult: state => state.entity.entries[0].API
     }),
+    async mounted() {
+      const { data } = await Api.randomEntity()
+      this.result = data.entries[0].API
+    },
     methods: {
         go: async function () {
             Api.randomEntity()
