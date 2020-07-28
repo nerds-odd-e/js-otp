@@ -4,20 +4,25 @@ import {createStore} from '@/store'
 import axios from 'axios'
 import {when} from 'jest-when'
 import flushPromises from 'flush-promises/index'
+import {expectAllTextExists} from '../helper'
+
+const givenRandomApi = entry => {
+    when(axios.get).calledWith('https://api.publicapis.org/random').mockResolvedValue({
+        data: {
+            entries: [entry]
+        }
+    })
+}
 
 describe('About', () => {
     test('should show a random api name', async() => {
-        when(axios.get).calledWith('https://api.publicapis.org/random').mockResolvedValue({
-            data: {
-                entries: [{
-                    API: 'apiName'
-                }]
-            }
+        givenRandomApi({
+            API: 'apiName'
         })
 
         var wrapper = await mount(About, { store: createStore(), localVue: createLocalVue() })
         await flushPromises()
 
-        expect(wrapper.html()).toContain('apiName')
+        expectAllTextExists(wrapper, 'apiName')
     })
 })
