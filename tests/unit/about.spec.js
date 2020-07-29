@@ -93,4 +93,21 @@ describe('About', () => {
 
         expectAllTextExists(wrapper, 'anotherApiName')
     })
+
+    test('should show toast with api link by go button', async() => {
+        await mountWithStore()
+        await flushPromises()
+
+        givenRandomApi({
+            Link: 'apiLink'
+        })
+        await clickButtonByText('Go')
+        await flushPromises()
+
+        expect(mocks.$toasted.show).toBeCalledWith('apiLink', {
+            type: 'info',
+            position: 'bottom-center',
+            duration: 2000
+        })
+    })
 })
