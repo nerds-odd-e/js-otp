@@ -2,9 +2,9 @@
     <div class="about">
         <h1>This is an about page</h1>
         <h1>Your random api is {{result}}</h1>
-        <button class="go" v-on:click="go">Go</button>
+        <el-button type="primary" v-on:click="go">Go</el-button>
         <h1>Your random api from store is {{storeResult}}</h1>
-        <button v-on:click="randomEntity">GoStore</button>
+        <el-button type="primary" v-on:click="randomEntity">GoStore</el-button>
     </div>
 </template>
 

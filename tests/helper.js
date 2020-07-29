@@ -6,3 +6,8 @@ export const expectAllTextExists = (wrapper, ...allText) => {
         expect($(`:contains(${text})`).length).toBeGreaterThan(0)
     })
 }
+
+export const clickButtonByText = async(wrapper, text) => {
+    await wrapper.findAll('button').wrappers.find(e => e.text() === text).trigger('click')
+}
+

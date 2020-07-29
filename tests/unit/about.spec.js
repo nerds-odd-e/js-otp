@@ -4,10 +4,7 @@ import {createStore} from '@/store'
 import axios from 'axios'
 import {when} from 'jest-when'
 import flushPromises from 'flush-promises/index'
-import {expectAllTextExists} from '../helper'
-import {mapMutations} from 'vuex'
-import {RANDOM_ENTITY} from '@/store/entity'
-import Vuex from 'vuex'
+import {clickButtonByText, expectAllTextExists} from '../helper'
 
 const givenRandomApi = entry => {
     when(axios.get).calledWith('https://api.publicapis.org/random').mockResolvedValue({
@@ -23,10 +20,6 @@ const createStoreWithApiName = (apiName) => {
     const store = createStore()
     store.state.entity.entries[0].API = apiName
     return store
-}
-
-const clickButtonByText = async(text) => {
-    await wrapper.findAll('button').wrappers.find(e => e.text() === text).trigger('click')
 }
 
 const mocks = {
@@ -74,7 +67,7 @@ describe('About', () => {
         givenRandomApi({
             API: 'anotherApiName'
         })
-        await clickButtonByText('Go')
+        await clickButtonByText(wrapper, 'Go')
         await flushPromises()
 
         expectAllTextExists(wrapper, 'anotherApiName')
@@ -88,7 +81,7 @@ describe('About', () => {
         givenRandomApi({
             API: 'anotherApiName'
         })
-        await clickButtonByText('GoStore')
+        await clickButtonByText(wrapper, 'GoStore')
         await flushPromises()
 
         expectAllTextExists(wrapper, 'anotherApiName')
@@ -101,7 +94,7 @@ describe('About', () => {
         givenRandomApi({
             Link: 'apiLink'
         })
-        await clickButtonByText('Go')
+        await clickButtonByText(wrapper, 'Go')
         await flushPromises()
 
         expect(wrapper.vm.$toasted.show).toBeCalledWith('apiLink', {

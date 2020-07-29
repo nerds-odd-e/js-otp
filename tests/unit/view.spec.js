@@ -1,15 +1,16 @@
-import {shallowMount, createLocalVue} from '@vue/test-utils'
+import {createLocalVue, mount} from '@vue/test-utils'
 import About from '@/views/About'
 import Api from '@/api'
 import Vuex from 'vuex'
 import Toasted from 'vue-toasted'
 import { render, fireEvent } from '@testing-library/vue'
+import {clickButtonByText} from '../helper'
 
 const localVue = createLocalVue()
 
 const createView = function (component, state) {
     localVue.use(Vuex)
-    return shallowMount(component, {store: new Vuex.Store(state), localVue});
+    return mount(component, {store: new Vuex.Store(state), localVue});
 };
 
 describe('view', function () {
@@ -68,8 +69,8 @@ describe('view', function () {
         getByText('Your random api from store is ApiName')
     });
 
-    const go = function () {
-        component.find('button.go').trigger('click');
+    const go = async function () {
+        await clickButtonByText(component, "Go")
     };
 
     const givenRandomEntityWithName = function ({apiName, link}) {
