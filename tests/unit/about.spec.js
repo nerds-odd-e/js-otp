@@ -104,7 +104,7 @@ describe('About', () => {
         await clickButtonByText('Go')
         await flushPromises()
 
-        expect(mocks.$toasted.show).toBeCalledWith('apiLink', {
+        expect(wrapper.vm.$toasted.show).toBeCalledWith('apiLink', {
             type: 'info',
             position: 'bottom-center',
             duration: 2000
